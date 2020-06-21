@@ -19,9 +19,9 @@ from rece.views import LandingPage, AddDonation, Login, Register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LandingPage.as_view()),
-    path('AddDonation/', AddDonation.as_view()),
-    path('Login/', Login.as_view()),
-    path('Register/', Register.as_view()),
+    path('', LandingPage.as_view(), name='landing_page'),
+    path('form/', AddDonation.as_view(), name='add_donation'),
+    path('Login/', Login.as_view(), name='login'),
+    path('Register/', Register.as_view(), name='register'),
 
 ]

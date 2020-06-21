@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,17 +14,21 @@ class Category(models.Model):
     name = models.CharField(max_length=64)
 
 
+fundacja = 'fundacja'
+organizacja_pozarzadowa = 'organizacja_pozarządowa'
+zbiorka_lokalna = 'zbiorka_lokalna'
+
 TYPES_OF_INSTITUTIONS = (
-    (1, 'fundacja'),
-    (2, 'organizacja pozarządowa'),
-    (3, 'zbiórka lokalna'),
+    (fundacja, 'fundacja'),
+    (organizacja_pozarzadowa, 'organizacja pozarządowa'),
+    (zbiorka_lokalna, 'zbiórka lokalna'),
 )
 
 
 class Institution(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField()
-    type = models.IntegerField(choices=TYPES_OF_INSTITUTIONS, default=1)
+    type = models.CharField(choices=TYPES_OF_INSTITUTIONS, max_length=64, default=fundacja)
     categories = models.ManyToManyField(Category)
 
 
