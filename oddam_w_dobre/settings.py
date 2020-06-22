@@ -25,7 +25,7 @@ SECRET_KEY = '8yw#pc6a)!nope$4cvp3hcbovq3*&_8pt*@($m%g0fgv9l2-7)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.129']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -121,4 +121,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'rece.User'
-AUTHENTICATION_BACKENDS = ['path.to.auth.module.EmailBackend']
+# AUTHENTICATION_BACKENDS = ['path.to.auth.module.EmailBackend']
+AUTHENTICATION_BACKENDS = ['rece.backends.EmailBackend']

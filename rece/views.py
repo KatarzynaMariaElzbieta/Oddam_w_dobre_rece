@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect
 from django.views import View
-from .models import Donation, Institution
+from .models import Donation, Institution, User
+from .forms import NewUserForm, LoginForm
 # Create your views here.
 
 
@@ -48,9 +50,49 @@ class AddDonation(View):
 
 class Login(View):
     def get(self, request):
-        return render(request, 'login.html', {})
+        form = LoginForm
+        return render(request, 'login.html', {'form': form})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            username = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            print(username)
+            user = authenticate(username=username, password=password)
+            print(user)
+            if user is not None:
+                if user.is_authenticated:
+                    login(self.request, user)
+                    ctx['user'] = user
+                    return render(request, 'index.html', ctx)
+            form = LoginForm()
+            ctx['mess'] = "Błąd logowania. Spróbuj jeszcze raz."
+            ctx['form'] = form
+        return render(request, 'login.html', ctx)
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 
 class Register(View):
     def get(self, request):
-        return render(request, 'register.html', {})
+        form = NewUserForm()
+        return render(request, 'register.html', {'form': form})
+
+    def post(self, request):
+        form = NewUserForm(request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name)
+            return redirect('login')
+        message = 'Niepoprawne dane'
+        return render(request, 'register.html', {'form': form, 'mess': message})
