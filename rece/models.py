@@ -56,7 +56,6 @@ class User(AbstractUser):
 class Category(models.Model):
     name = models.CharField(max_length=64)
 
-
 fundacja = 'fundacja'
 organizacja_pozarzadowa = 'organizacja_pozarządowa'
 zbiorka_lokalna = 'zbiorka_lokalna'

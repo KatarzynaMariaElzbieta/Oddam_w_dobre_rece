@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Donation, Category
 
 
 class NewUserForm(forms.ModelForm):

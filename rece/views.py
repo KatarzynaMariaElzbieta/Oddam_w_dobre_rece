@@ -3,8 +3,6 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .models import Donation, Institution, User
 from .forms import NewUserForm, LoginForm
-# Create your views here.
-
 
 class LandingPage(View):
     def get(self, request):
@@ -45,7 +43,7 @@ class LandingPage(View):
 
 class AddDonation(View):
     def get(self, request):
-        return render(request, 'form.html', {})
+        return render(request, 'form.html', {'form': form})
 
 
 class Login(View):
@@ -71,7 +69,6 @@ class Login(View):
             ctx['mess'] = "Błąd logowania. Spróbuj jeszcze raz."
             ctx['form'] = form
         return render(request, 'login.html', ctx)
-
 
 
 def logout_view(request):
