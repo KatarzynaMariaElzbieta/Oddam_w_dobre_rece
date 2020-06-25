@@ -14,7 +14,7 @@ class MyUserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
         )
-
+        user.username = email
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -26,6 +26,7 @@ class MyUserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
         )
+        user.username = email
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -37,7 +38,10 @@ class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     email = models.EmailField(_('email address'), unique=True)  # changes email to unique and blank to false
-    REQUIRED_FIELDS = []
+    first_name = models.CharField(max_length=64)
+    last_name = models.CharField(max_length=64)
+    username = models.CharField(max_length=64, unique=False)
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def __str__(self):
         return self.email
@@ -53,12 +57,18 @@ class User(AbstractUser):
         return self.is_admin
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
 
 fundacja = 'fundacja'
 organizacja_pozarzadowa = 'organizacja_pozarządowa'
 zbiorka_lokalna = 'zbiorka_lokalna'
+
 
 TYPES_OF_INSTITUTIONS = (
     (fundacja, 'fundacja'),
@@ -72,6 +82,9 @@ class Institution(models.Model):
     description = models.TextField()
     type = models.CharField(choices=TYPES_OF_INSTITUTIONS, max_length=64, default=fundacja)
     categories = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return self.name
 
 
 class Donation(models.Model):

@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import Donation, Institution, User
+from .models import Donation, Institution, User, Category
 from .forms import NewUserForm, LoginForm
 
 class LandingPage(View):
@@ -43,7 +43,9 @@ class LandingPage(View):
 
 class AddDonation(View):
     def get(self, request):
-        return render(request, 'form.html', {'form': form})
+        categories = Category.objects.all()
+        institution = Institution.objects.all()
+        return render(request, 'form.html', {'categories': categories, 'institution': institution})
 
 
 class Login(View):
